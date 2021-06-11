@@ -163,7 +163,7 @@ Sau đó xóa hết container, images liên quan ELK
 
 ## Initial setup
 
-### Setting up user authentication
+### Setting tài khoản đăng nhập
 
 
 Đăng nhập bằng tài khoản và mật khẩu sau:
@@ -222,16 +222,28 @@ Now that the stack is running, you can go ahead and inject some log entries. The
 you to send content via TCP:
 
 ```console
-# Using BSD netcat (Debian, Ubuntu, MacOS system, ...)
+# Dùng BSD netcat (Debian, Ubuntu, MacOS system, ...)
 $ cat /path/to/logfile.log | nc -q0 localhost 5000
 ```
 
 ```console
-# Using GNU netcat (CentOS, Fedora, MacOS Homebrew, ...)
+# Dùng GNU netcat (CentOS, Fedora, MacOS Homebrew, ...)
 $ cat /path/to/logfile.log | nc -c localhost 5000
 ```
 
-You can also load the sample data provided by your Kibana installation.
+Sử dụng output trong filebeat.yml
+
+```console
+# Dùng filebeat docker run
+$ docker run -d \
+--name=filebeat \
+--user=root \
+--volume="$(pwd)/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro" \
+--volume="/logs:/logs:ro" \
+docker.elastic.co/beats/filebeat:7.10.0 filebeat -e -strict.perms=false
+```
+
+Bạn có thể sử dụng data mẫu từ Kibana.
 
 ### Default Kibana index pattern creation
 
