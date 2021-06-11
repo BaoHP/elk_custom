@@ -1,14 +1,5 @@
 # Elastic stack (ELK) on Docker
 
-[![Elastic Stack version](https://img.shields.io/badge/Elastic%20Stack-7.9.2-00bfb3?style=flat&logo=elastic-stack)](https://github.com/deviantony/docker-elk/issues/539)
-[![Build Status](https://github.com/deviantony/docker-elk/workflows/CI/badge.svg?branch=master)](https://github.com/deviantony/docker-elk/actions?query=workflow%3ACI+branch%3Amaster)
-[![Join the chat at https://gitter.im/deviantony/docker-elk](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deviantony/docker-elk?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-* [`searchguard`](https://github.com/deviantony/docker-elk/tree/searchguard): Search Guard support
-
-
-## Contents
-
 1. [Requirements](#requirements)
    * [Host setup](#host-setup)
    * [SELinux](#selinux)
@@ -27,6 +18,7 @@
    * [How to configure Elasticsearch](#how-to-configure-elasticsearch)
    * [How to configure Kibana](#how-to-configure-kibana)
    * [How to configure Logstash](#how-to-configure-logstash)
+   * [How to configure Filebeat](#how-to-configure-filebeat)
    * [How to disable paid features](#how-to-disable-paid-features)
    * [How to scale out the Elasticsearch cluster](#how-to-scale-out-the-elasticsearch-cluster)
    * [How to reset a password programmatically](#how-to-reset-a-password-programmatically)
@@ -98,11 +90,6 @@ you are upgrading an existing stack, please carefully read the note in the next 
 
 **:warning: Always pay attention to the [official upgrade instructions][upgrade] for each individual component before
 performing a stack upgrade.**
-
-Older major versions are also supported on separate branches:
-
-* [`release-6.x`](https://github.com/deviantony/docker-elk/tree/release-6.x): 6.x series
-* [`release-5.x`](https://github.com/deviantony/docker-elk/tree/release-5.x): 5.x series (End-Of-Life)
 
 ### Bringing up the stack
 
@@ -215,7 +202,7 @@ Bạn có thể sử dụng data mẫu từ Kibana.
 
 ### Default Kibana index pattern creation
 
-When Kibana launches for the first time, it is not configured with any index pattern.
+Lần đầu tiên chạy Kibana, bạn cần thêm index pattern.
 
 #### Via the Kibana web UI
 
@@ -279,22 +266,15 @@ containers: [Install Kibana with Docker][kbn-docker].
 
 The Logstash configuration is stored in [`logstash/config/logstash.yml`][config-ls].
 
-It is also possible to map the entire `config` directory instead of a single file, however you must be aware that
-Logstash will be expecting a [`log4j2.properties`][log4j-props] file for its own logging.
-
-Please refer to the following documentation page for more details about how to configure Logstash inside Docker
-containers: [Configuring Logstash for Docker][ls-docker].
-
+Tài liệu tham khảo: 
+[Configuring Logstash for Docker][ls-docker].
+[Grok-debugger][grock-debugger].
+[Regex][regex].
 ### How to disable paid features
 
 Switch the value of Elasticsearch's `xpack.license.self_generated.type` option from `trial` to `basic` (see [License
 settings][trial-license]).
-
-### How to scale out the Elasticsearch cluster
-
-Follow the instructions from the Wiki: [Scaling out Elasticsearch](https://github.com/deviantony/docker-elk/wiki/Elasticsearch-cluster)
-
-### How to reset a password programmatically
+### Reset a password programmatically
 
 If for any reason your are unable to use Kibana to change the password of your users (including [built-in
 users][builtin-users]), you can use the Elasticsearch API instead and achieve the same result.
@@ -427,6 +407,8 @@ instead of `elasticsearch`.*
 [es-docker]: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 [kbn-docker]: https://www.elastic.co/guide/en/kibana/current/docker.html
 [ls-docker]: https://www.elastic.co/guide/en/logstash/current/docker-config.html
+[grock-debugger]: https://grokdebug.herokuapp.com
+[regex]: https://regexr.com/
 
 [log4j-props]: https://github.com/elastic/logstash/tree/7.6/docker/data/logstash/config
 [esuser]: https://github.com/elastic/elasticsearch/blob/7.6/distribution/docker/src/docker/Dockerfile#L23-L24
