@@ -1,14 +1,13 @@
-# Elastic stack (ELK) on Docker
+# ELK on Docker
 ### Host setup
 
-* [Docker Engine](https://docs.docker.com/install/) version **17.05** or newer
-* [Docker Compose](https://docs.docker.com/compose/install/) version **1.20.0** or newer
+* [Docker Engine](https://docs.docker.com/install/) version **17.05** hoặc cao hơn
+* [Docker Compose](https://docs.docker.com/compose/install/) version **1.20.0** hoặc cao hơn
 * 1.5 GB of RAM
 
-*:information_source: Especially on Linux, make sure your user has the [required permissions][linux-postinstall] to
-interact with the Docker daemon.*
+*:information_source: Đảm bảo các quyền cần thiết tương tác với Docker daemon.*
 
-By default, the stack exposes the following ports:
+Ports mặc định:
 
 * 5044: Logstash Beats input
 * 5000: Logstash TCP input
@@ -115,18 +114,6 @@ $ cat /path/to/logfile.log | nc -q0 localhost 5000
 $ cat /path/to/logfile.log | nc -c localhost 5000
 ```
 
-Sử dụng output trong filebeat.yml
-
-```console
-# Dùng filebeat docker run
-$ docker run -d \
---name=filebeat \
---user=root \
---volume="$(pwd)/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro" \
---volume="/logs:/logs:ro" \
-docker.elastic.co/beats/filebeat:7.10.0 filebeat -e -strict.perms=false
-```
-
 Bạn có thể sử dụng data mẫu từ Kibana.
 
 ### Default Kibana index pattern creation
@@ -165,7 +152,23 @@ first time.
 *:information_source: Configuration is not dynamically reloaded, you will need to restart individual components after
 any configuration change.*
 
-### How to configure Elasticsearch
+### Filebeat
+
+Sử dụng output trong filebeat.yml
+
+```console
+# Dùng filebeat docker run
+$ docker run -d \
+--name=filebeat \
+--user=root \
+--volume="$(pwd)/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro" \
+--volume="/logs:/logs:ro" \
+docker.elastic.co/beats/filebeat:7.10.0 filebeat -e -strict.perms=false
+```
+
+Mount volume "--volume="/logs:/logs:ro" \" chứa log sang container.
+
+### Elasticsearch
 
 The Elasticsearch configuration is stored in [`elasticsearch/config/elasticsearch.yml`][config-es].
 
@@ -182,7 +185,7 @@ elasticsearch:
 Please refer to the following documentation page for more details about how to configure Elasticsearch inside Docker
 containers: [Install Elasticsearch with Docker][es-docker].
 
-### How to configure Kibana
+### Kibana
 
 The Kibana default configuration is stored in [`kibana/config/kibana.yml`][config-kbn].
 
@@ -190,7 +193,7 @@ Tài liệu tham khảo:
 
 [Install Kibana with Docker][kbn-docker].
 
-### How to configure Logstash
+### Logstash
 
 The Logstash configuration is stored in [`logstash/config/logstash.yml`][config-ls].
 
