@@ -16,12 +16,6 @@
    * [How to disable paid features](#how-to-disable-paid-features)
    * [How to scale out the Elasticsearch cluster](#how-to-scale-out-the-elasticsearch-cluster)
    * [How to reset a password programmatically](#how-to-reset-a-password-programmatically)
-1. [Extensibility](#extensibility)
-   * [How to add plugins](#how-to-add-plugins)
-   * [How to enable the provided extensions](#how-to-enable-the-provided-extensions)
-1. [JVM tuning](#jvm-tuning)
-   * [How to specify the amount of memory used by a service](#how-to-specify-the-amount-of-memory-used-by-a-service)
-   * [How to enable a remote JMX connection to a service](#how-to-enable-a-remote-jmx-connection-to-a-service)
 
 ### Host setup
 
@@ -54,19 +48,6 @@ apply the proper context:
 ```console
 $ chcon -R system_u:object_r:admin_home_t:s0 docker-elk/
 ```
-
-### Docker for Desktop
-
-#### Windows
-
-Ensure the [Shared Drives][win-shareddrives] feature is enabled for the `C:` drive.
-
-#### macOS
-
-The default Docker for Mac configuration allows mounting files from `/Users/`, `/Volumes/`, `/private/`, and `/tmp`
-exclusively. Make sure the repository is cloned in one of those locations or follow the instructions from the
-[documentation][mac-mounts] to add more locations.
-
 ## Usage
 
 ### Version selection
@@ -279,17 +260,6 @@ $ curl -XPOST -D- 'http://localhost:9200/_security/user/elastic/_password' \
     -u elastic:<your current elastic password> \
     -d '{"password" : "<your new password>"}'
 ```
-
-## Extensibility
-
-### How to add plugins
-
-To add plugins to any ELK component you have to:
-
-1. Add a `RUN` statement to the corresponding `Dockerfile` (eg. `RUN logstash-plugin install logstash-filter-json`)
-1. Add the associated plugin code configuration to the service configuration (eg. Logstash input/output)
-1. Rebuild the images using the `docker-compose build` command
-
 ### How to enable the provided extensions
 
 A few extensions are available inside the [`extensions`](extensions) directory. These extensions provide features which
@@ -297,8 +267,6 @@ are not part of the standard Elastic stack, but can be used to enrich it with ex
 
 The documentation for these extensions is provided inside each individual subdirectory, on a per-extension basis. Some
 of them require manual changes to the default ELK configuration.
-
-## JVM tuning
 
 ### How to specify the amount of memory used by a service
 
@@ -346,20 +314,12 @@ logstash:
 *:information_source: To scale Elasticsearch in Swarm mode, configure seed hosts with the DNS name `tasks.elasticsearch`
 instead of `elasticsearch`.*
 
-[elk-stack]: https://www.elastic.co/what-is/elk-stack
-[xpack]: https://www.elastic.co/what-is/open-x-pack
-[paid-features]: https://www.elastic.co/subscriptions
-[trial-license]: https://www.elastic.co/guide/en/elasticsearch/reference/current/license-settings.html
-
 [elastdocker]: https://github.com/sherifabdlnaby/elastdocker
 
 [linux-postinstall]: https://docs.docker.com/install/linux/linux-postinstall/
 
 [booststap-checks]: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
 [es-sys-config]: https://www.elastic.co/guide/en/elasticsearch/reference/current/system-config.html
-
-[win-shareddrives]: https://docs.docker.com/docker-for-windows/#shared-drives
-[mac-mounts]: https://docs.docker.com/docker-for-mac/osxfs/
 
 [builtin-users]: https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-users.html
 [ls-security]: https://www.elastic.co/guide/en/logstash/current/ls-security.html
@@ -378,9 +338,4 @@ instead of `elasticsearch`.*
 [grock-debugger]: https://grokdebug.herokuapp.com
 [regex]: https://regexr.com/
 
-[log4j-props]: https://github.com/elastic/logstash/tree/7.6/docker/data/logstash/config
-[esuser]: https://github.com/elastic/elasticsearch/blob/7.6/distribution/docker/src/docker/Dockerfile#L23-L24
-
 [upgrade]: https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html
-
-[swarm-mode]: https://docs.docker.com/engine/swarm/
