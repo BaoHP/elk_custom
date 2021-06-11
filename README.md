@@ -1,22 +1,4 @@
 # Elastic stack (ELK) on Docker
-
-1. [Usage](#usage)
-   * [Version selection](#version-selection)
-   * [Bringing up the stack](#bringing-up-the-stack)
-   * [Cleanup](#cleanup)
-   * [Initial setup](#initial-setup)
-     * [Setting up user authentication](#setting-up-user-authentication)
-     * [Injecting data](#injecting-data)
-     * [Default Kibana index pattern creation](#default-kibana-index-pattern-creation)
-1. [Configuration](#configuration)
-   * [How to configure Elasticsearch](#how-to-configure-elasticsearch)
-   * [How to configure Kibana](#how-to-configure-kibana)
-   * [How to configure Logstash](#how-to-configure-logstash)
-   * [How to configure Filebeat](#how-to-configure-filebeat)
-   * [How to disable paid features](#how-to-disable-paid-features)
-   * [How to scale out the Elasticsearch cluster](#how-to-scale-out-the-elasticsearch-cluster)
-   * [How to reset a password programmatically](#how-to-reset-a-password-programmatically)
-
 ### Host setup
 
 * [Docker Engine](https://docs.docker.com/install/) version **17.05** or newer
@@ -35,12 +17,10 @@ By default, the stack exposes the following ports:
 * 9300: Elasticsearch TCP transport
 * 5601: Kibana
 
-## Usage
+## Sử dụng
+### Lựa chọn Version
 
-### Version selection
-
-This repository tries to stay aligned with the latest version of the Elastic stack. The `master` branch tracks the
-current major version (7.x).
+Bộ ELK Version (7.x).
 
 To use a different version of the core Elastic components, simply change the version number inside the `.env` file. If
 you are upgrading an existing stack, please carefully read the note in the next section.
@@ -48,21 +28,13 @@ you are upgrading an existing stack, please carefully read the note in the next 
 **:warning: Always pay attention to the [official upgrade instructions][upgrade] for each individual component before
 performing a stack upgrade.**
 
-### Bringing up the stack
+### Cài đặt
 
-Clone this repository onto the Docker host that will run the stack, then start services locally using Docker Compose:
+Clone repository và khởi chạy nó bằng Docker Compose
 
 ```console
 $ docker-compose up
 ```
-
-You can also run all services in the background (detached mode) by adding the `-d` flag to the above command.
-
-**:warning: You must rebuild the stack images with `docker-compose build` whenever you switch branch or update the
-version of an already existing stack.**
-
-If you are starting the stack for the very first time, please read the section below attentively.
-
 ### Gỡ cài đặt
 
 Tiến hành tắt docker-compose
