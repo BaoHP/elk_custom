@@ -257,10 +257,7 @@ containers: [Install Elasticsearch with Docker][es-docker].
 
 The Kibana default configuration is stored in [`kibana/config/kibana.yml`][config-kbn].
 
-It is also possible to map the entire `config` directory instead of a single file.
-
-Please refer to the following documentation page for more details about how to configure Kibana inside Docker
-containers: [Install Kibana with Docker][kbn-docker].
+Tài liệu tham khảo: [Install Kibana with Docker][kbn-docker].
 
 ### How to configure Logstash
 
@@ -268,8 +265,11 @@ The Logstash configuration is stored in [`logstash/config/logstash.yml`][config-
 
 Tài liệu tham khảo: 
 [Configuring Logstash for Docker][ls-docker].
+
 [Grok-debugger][grock-debugger].
+
 [Regex][regex].
+
 ### How to disable paid features
 
 Switch the value of Elasticsearch's `xpack.license.self_generated.type` option from `trial` to `basic` (see [License
