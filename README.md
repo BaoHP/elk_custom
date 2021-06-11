@@ -151,26 +151,25 @@ version of an already existing stack.**
 
 If you are starting the stack for the very first time, please read the section below attentively.
 
-### Cleanup
+### Gỡ cài đặt
 
-Elasticsearch data is persisted inside a volume by default.
-
-In order to entirely shutdown the stack and remove all persisted data, use the following Docker Compose command:
+Tiến hành tắt docker-compose
 
 ```console
-$ docker-compose down -v
+$ docker-compose down
 ```
+
+Sau đó xóa hết container, images liên quan ELK
 
 ## Initial setup
 
 ### Setting up user authentication
 
-*:information_source: Refer to [How to disable paid features](#how-to-disable-paid-features) to disable authentication.*
 
-The stack is pre-configured with the following **privileged** bootstrap user:
+Đăng nhập bằng tài khoản và mật khẩu sau:
 
 * user: *elastic*
-* password: *changeme*
+* password: *admin*
 
 Although all stack components work out-of-the-box with this user, we strongly recommend using the unprivileged [built-in
 users][builtin-users] instead for increased security.
