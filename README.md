@@ -21,11 +21,9 @@ Ports mặc định:
 
 Bộ ELK Version (7.x).
 
-To use a different version of the core Elastic components, simply change the version number inside the `.env` file. If
-you are upgrading an existing stack, please carefully read the note in the next section.
+Để có thể dùng version khác, thay đổi tại file `.env`. Cẩn thận khi update version và đọc note dưới đây.
 
-**:warning: Always pay attention to the [official upgrade instructions][upgrade] for each individual component before
-performing a stack upgrade.**
+**:warning: [official upgrade instructions][upgrade] **
 
 ### Cài đặt
 
@@ -149,8 +147,7 @@ first time.
 
 ## Configuration
 
-*:information_source: Configuration is not dynamically reloaded, you will need to restart individual components after
-any configuration change.*
+*:information_source: Config được sẽ không được thay đổi tự động. Bạn cần restart các component lại khi config được thay đổi. *
 
 ### Filebeat
 
@@ -166,13 +163,15 @@ $ docker run -d \
 docker.elastic.co/beats/filebeat:7.10.0 filebeat -e -strict.perms=false
 ```
 
+Chú ý đứng tại forder chứa filebeat.docker.yml
+
 Mount volume "--volume="/logs:/logs:ro" \" chứa log sang container.
 
 ### Elasticsearch
 
-The Elasticsearch configuration is stored in [`elasticsearch/config/elasticsearch.yml`][config-es].
+Elasticsearch config ở file [`elasticsearch/config/elasticsearch.yml`][config-es].
 
-You can also specify the options you want to override by setting environment variables inside the Compose file:
+Bạn cũng có thể chỉ định các tùy chọn bạn muốn ghi đè bằng cách đặt các biến môi trường bên trong tệp file Compose:
 
 ```yml
 elasticsearch:
@@ -231,10 +230,13 @@ Dùng Grok để phân giải log ra các pattern. Chúng ta có thể dùng lin
 
 Áp dụng thêm regex để có thể xử lý đoạn log 1 cách tối ưu nhất.
 
-### How to disable paid features
+### Tắt tính năng trả phí
 
-Switch the value of Elasticsearch's `xpack.license.self_generated.type` option from `trial` to `basic` (see [License
+Thay đổi giá trị của Elasticsearch's `xpack.license.self_generated.type` từ `trial` sang `basic` ([License
 settings][trial-license]).
+
+Hoặc có thể thay đổi tại giao diện Kibana
+
 ### Reset a password programmatically
 
 If for any reason your are unable to use Kibana to change the password of your users (including [built-in
