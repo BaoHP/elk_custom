@@ -1,8 +1,8 @@
 # ELK on Docker
 ### Host setup
 
-* [Docker Engine](https://docs.docker.com/install/) version **17.05** hoặc cao hơn
-* [Docker Compose](https://docs.docker.com/compose/install/) version **1.20.0** hoặc cao hơn
+* [Docker Engine](https://docs.docker.com/install/) version >= **17.05**
+* [Docker Compose](https://docs.docker.com/compose/install/) version >= **1.20.0**
 * 1.5 GB of RAM
 
 *:information_source: Đảm bảo các quyền cần thiết tương tác với Docker daemon.*
@@ -120,7 +120,7 @@ Bạn có thể sử dụng data mẫu từ Kibana.
 
 Lần đầu tiên chạy Kibana, bạn cần thêm index pattern.
 
-#### Via the Kibana web UI
+#### Kibana web UI
 
 *:information_source: You need to inject data into Logstash before being able to configure a Logstash index pattern via
 the Kibana web UI.*
@@ -201,9 +201,33 @@ Tài liệu tham khảo:
 
 [Configuring Logstash for Docker][ls-docker].
 
+Cách config, bố cục và cú pháp được trình bày rõ ràng ở link tài liệu Config Logstash phía trên.
+
+Đặc biệt việc config hay xử lý những pattern trong đoạn log 1 cách phức tạp... bạn có thể áp dụng code ruby trong Logstash config.
+
+```console
+ruby {
+		code => "
+		require 'date'
+        //event.get('timelog') get giá trị của field timelog và gán cho biến b, tương tự đối với biến c
+		b = event.get('timelog')
+		c = event.get('date')
+        //Convert chuỗi string tháng ra số sau đó parse lại nó dưới dạng string.
+		month = Date::ABBR_MONTHNAMES.index(c[0,3]).to_s
+		month_cus = month.size > 1 ? month : '0' + month
+		zero_str = c[4].strip.empty? ? '0' + c[5] : c[4,5]
+		d = b[0,4] + ':' + month_cus + ':' + zero_str + c[6, c.size]
+		event.set('time', d);"
+	}
+```
+
 [Grok-debugger][grock-debugger].
 
+Dùng Grok để phân giải log ra các pattern. Chúng ta có thể dùng link trên để debugger xem các pattern đã chính xác chưa, hoặc sử dụng mục Discover để tự động phân giải log từ đó tìm ra cách cấu trúc pattern tốt nhất cho đoạn log của mình.
+
 [Regex][regex].
+
+Áp dụng thêm regex để có thể xử lý đoạn log 1 cách tối ưu nhất.
 
 ### How to disable paid features
 
