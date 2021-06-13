@@ -242,15 +242,13 @@ $ curl -XPOST -D- 'http://localhost:9200/_security/user/elastic/_password' \
     -u elastic:<your current elastic password> \
     -d '{"password" : "<your new password>"}'
 ```
-### How to enable the provided extensions
+### Bật các extensions
 
-A few extensions are available inside the [`extensions`](extensions) directory. These extensions provide features which
-are not part of the standard Elastic stack, but can be used to enrich it with extra integrations.
+Một số tiện ích mở rộng có sẵn bên trong [`extensions`](extensions). Các tiện ích mở rộng này cung cấp các tính năng không phải là một phần của Elastic stack chuẩn, nhưng có thể được sử dụng để làm phong phú thêm với các tích hợp bổ sung.
 
-The documentation for these extensions is provided inside each individual subdirectory, on a per-extension basis. Some
-of them require manual changes to the default ELK configuration.
+Tài liệu cho các phần mở rộng này được cung cấp bên trong mỗi thư mục con riêng lẻ, trên cơ sở mỗi phần mở rộng. Một số yêu cầu thay đổi thủ công đối với cấu hình ELK mặc định.
 
-### How to specify the amount of memory used by a service
+### Chỉ định dung lượng bộ nhớ được sử dụng bởi một service
 
 Mặc định, cả Elasticsearch và Logstash đều bắt đầu với [1/4 tổng bộ nhớ host
 memory](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html#default_heap_size) được phân bổ cho Kích thước Heap JVM
@@ -262,10 +260,9 @@ Các tập lệnh khởi động cho Elasticsearch và Logstash có thể thêm 
 | Elasticsearch | ES_JAVA_OPTS         |
 | Logstash      | LS_JAVA_OPTS         |
 
-Để đáp ứng các môi trường khan hiếm bộ nhớ (Docker cho Mac chỉ có sẵn 2 GB theo mặc định), phân bổ Kích thước đống được giới hạn theo mặc định là 256 MB cho mỗi dịch vụ trong `docker-compose.yml` file. If you want to override the
-default JVM configuration, edit the matching environment variable(s) in the `docker-compose.yml` file.
+Để đáp ứng các môi trường khan hiếm bộ nhớ (Docker cho Mac chỉ có sẵn 2 GB theo mặc định), phân bổ Kích thước đống được giới hạn theo mặc định là 256 MB cho mỗi dịch vụ trong `docker-compose.yml` file. Nếu bạn muốn ghi đè cấu hình JVM mặc định, hãy chỉnh sửa (các) biến môi trường phù hợp trong `docker-compose.yml` file.
 
-For example, to increase the maximum JVM Heap Size for Logstash:
+Ví dụ, để tăng max JVM Heap Size cho Logstash:
 
 ```yml
 logstash:
