@@ -77,7 +77,7 @@ Sau đó xóa hết container, images liên quan ELK
 
     *:information_source: Không dùng `logstash_system` user trong Logstash **pipeline** file, nó không đủ quyền để tạo chỉ mục. Tài liệu tham khảo [Configuring Security in Logstash][ls-security].*
 
-    See also the [Configuration](#configuration) section below.
+    Xem [Configuration](#configuration) dưới đây.
 
 1. Khởi động lại Kibana và Logstash để chạy các thay đổi
 
@@ -229,12 +229,12 @@ settings][trial-license]).
 
 Hoặc có thể thay đổi tại giao diện Kibana
 
-### Reset a password programmatically
+### Đặt lại mật khẩu theo chương trình
 
-If for any reason your are unable to use Kibana to change the password of your users (including [built-in
-users][builtin-users]), you can use the Elasticsearch API instead and achieve the same result.
+Nếu vì bất kỳ lý do gì bạn không thể sử dụng Kibana để thay đổi mật khẩu của người dùng (bao gồm [built-in
+users][builtin-users])), bạn có thể sử dụng API Elasticsearch để thay thế và đạt được kết quả tương tự
 
-In the example below, we reset the password of the `elastic` user (notice "/user/elastic" in the URL):
+Trong ví dụ dưới đây, chúng tôi đặt lại mật khẩu của user `elastic` (notice "/user/elastic" trong URL):
 
 ```console
 $ curl -XPOST -D- 'http://localhost:9200/_security/user/elastic/_password' \
@@ -252,20 +252,17 @@ of them require manual changes to the default ELK configuration.
 
 ### How to specify the amount of memory used by a service
 
-By default, both Elasticsearch and Logstash start with [1/4 of the total host
-memory](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html#default_heap_size) allocated to
-the JVM Heap Size.
+Mặc định, cả Elasticsearch và Logstash đều bắt đầu với [1/4 tổng bộ nhớ host
+memory](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html#default_heap_size) được phân bổ cho Kích thước Heap JVM
 
-The startup scripts for Elasticsearch and Logstash can append extra JVM options from the value of an environment
-variable, allowing the user to adjust the amount of memory that can be used by each component:
+Các tập lệnh khởi động cho Elasticsearch và Logstash có thể thêm các tùy chọn JVM bổ sung từ giá trị của một biến môi trường, cho phép người dùng điều chỉnh lượng bộ nhớ có thể được sử dụng bởi mỗi thành phần:
 
 | Service       | Environment variable |
 |---------------|----------------------|
 | Elasticsearch | ES_JAVA_OPTS         |
 | Logstash      | LS_JAVA_OPTS         |
 
-To accomodate environments where memory is scarce (Docker for Mac has only 2 GB available by default), the Heap Size
-allocation is capped by default to 256MB per service in the `docker-compose.yml` file. If you want to override the
+Để đáp ứng các môi trường khan hiếm bộ nhớ (Docker cho Mac chỉ có sẵn 2 GB theo mặc định), phân bổ Kích thước đống được giới hạn theo mặc định là 256 MB cho mỗi dịch vụ trong `docker-compose.yml` file. If you want to override the
 default JVM configuration, edit the matching environment variable(s) in the `docker-compose.yml` file.
 
 For example, to increase the maximum JVM Heap Size for Logstash:
