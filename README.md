@@ -42,7 +42,7 @@ $ docker-compose down
 
 Sau đó xóa hết container, images liên quan ELK
 
-## Initial setup
+## Cài đặt
 
 ### Setting tài khoản đăng nhập
 
@@ -52,29 +52,28 @@ Sau đó xóa hết container, images liên quan ELK
 * user: *elastic*
 * password: *admin*
 
-Although all stack components work out-of-the-box with this user, we strongly recommend using the unprivileged [built-in
-users][builtin-users] instead for increased security.
+Để tăng cường bảo mật nên sử dụng [built-in users][builtin-users].
 
-1. Initialize passwords for built-in users
+1. Tự sinh password cho user
 
     ```console
     $ docker-compose exec -T elasticsearch bin/elasticsearch-setup-passwords auto --batch
     ```
 
-    Passwords for all 6 built-in users will be randomly generated. Take note of them.
+    Mật khẩu được tạo ngẫu nhiên. Note lại chúng
 
-1. Unset the bootstrap password (_optional_)
+1. Không set password (_optional_)
 
-    Remove the `ELASTIC_PASSWORD` environment variable from the `elasticsearch` service inside the Compose file
-    (`docker-compose.yml`). It is only used to initialize the keystore during the initial startup of Elasticsearch.
+    Xóa bỏ `ELASTIC_PASSWORD` trong `elasticsearch` service nằm trong Compose file
+    (`docker-compose.yml`).
 
-1. Replace usernames and passwords in configuration files
+1. Thay đổi usernames và passwords trong config files
 
     Use the `kibana_system` user (`kibana` for releases <7.8.0) inside the Kibana configuration file
     (`kibana/config/kibana.yml`) and the `logstash_system` user inside the Logstash configuration file
     (`logstash/config/logstash.yml`) in place of the existing `elastic` user.
 
-    Replace the password for the `elastic` user inside the Logstash pipeline file (`logstash/pipeline/logstash.conf`).
+    Thay thế password của `elastic` trong Logstash pipeline file (`logstash/pipeline/logstash.conf`).
 
     *:information_source: Do not use the `logstash_system` user inside the Logstash **pipeline** file, it does not have
     sufficient permissions to create indices. Follow the instructions at [Configuring Security in Logstash][ls-security]
@@ -82,25 +81,23 @@ users][builtin-users] instead for increased security.
 
     See also the [Configuration](#configuration) section below.
 
-1. Restart Kibana and Logstash to apply changes
+1. Khởi động lại Kibana và Logstash để chạy các thay đổi
 
     ```console
     $ docker-compose restart kibana logstash
     ```
 
-    *:information_source: Learn more about the security of the Elastic stack at [Tutorial: Getting started with
+    *:information_source: Tài liệu tham khảo [Tutorial: Getting started with
     security][sec-tutorial].*
 
 ### Injecting data
 
-Give Kibana about a minute to initialize, then access the Kibana web UI by opening <http://localhost:5601> in a web
-browser and use the following credentials to log in:
+Để Kibana vài phút khởi tạo, sau đó Kibana UI sẽ hiện thị trên đường dẫn <http://localhost:5601> và dùng các thông tin dưới để login:
 
 * user: *elastic*
 * password: *\<your generated elastic password>*
 
-Now that the stack is running, you can go ahead and inject some log entries. The shipped Logstash configuration allows
-you to send content via TCP:
+Gói ELK đã chạy, bạn có thể đẩy 1 số log vào. Logstash config sẽ cho phép bạn gửi dữ liệu thông qua TCP:
 
 ```console
 # Dùng BSD netcat (Debian, Ubuntu, MacOS system, ...)
@@ -112,27 +109,26 @@ $ cat /path/to/logfile.log | nc -q0 localhost 5000
 $ cat /path/to/logfile.log | nc -c localhost 5000
 ```
 
-Bạn có thể sử dụng data mẫu từ Kibana.
+Bạn có thể sử dụng data mẫu (sample data) từ Kibana.
 
-### Default Kibana index pattern creation
+Ở đây chúng ta sẽ sử dụng Filebeat. ( Xem phần Filebeat )
+
+### Kibana index pattern mặc định
 
 Lần đầu tiên chạy Kibana, bạn cần thêm index pattern.
 
 #### Kibana web UI
 
-*:information_source: You need to inject data into Logstash before being able to configure a Logstash index pattern via
-the Kibana web UI.*
+*:information_source: Bạn cần tiêm data vào Logstash trước khi config 1 Logstash index pattern thông qua Kibana web UI.*
 
-Navigate to the _Discover_ view of Kibana from the left sidebar. You will be prompted to create an index pattern. Enter
-`logstash-*` to match Logstash indices then, on the next page, select `@timestamp` as the time filter field. Finally,
-click _Create index pattern_ and return to the _Discover_ view to inspect your log entries.
+Chọn _Discover_ view trên Kibana from the ở bên trái sidebar. Bạn sẽ được nhắc tạo 1 index pattern. Enter
+`logstash-*` để match với Logstash indices, tiếp tục chọn `@timestamp` như là time filter field. Ở bước chọn timestamp bạn có thể không chọn khi bạn đã xác định được field thay thế cho timestamp này. Cuối cùng click _Create index pattern_ và quay về _Discover_ view để xem log được đẩy ra.
 
-Refer to [Connect Kibana with Elasticsearch][connect-kibana] and [Creating an index pattern][index-pattern] for detailed
-instructions about the index pattern configuration.
+Tham khảo [Connect Kibana with Elasticsearch][connect-kibana] và [Creating an index pattern][index-pattern].
 
-#### On the command line
+#### Command line
 
-Create an index pattern via the Kibana API:
+Tạo index pattern via the Kibana API:
 
 ```console
 $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
