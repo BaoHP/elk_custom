@@ -216,7 +216,9 @@ ruby {
 		month = Date::ABBR_MONTHNAMES.index(c[0,3]).to_s
 		month_cus = month.size > 1 ? month : '0' + month
 		zero_str = c[4].strip.empty? ? '0' + c[5] : c[4,5]
+        //xử lý để lấy được giá trị ngày tháng năm đúng chuẩn và gán cho biến d
 		d = b[0,4] + ':' + month_cus + ':' + zero_str + c[6, c.size]
+        //tạo field time và gán cho nó giá trị biến là biến d
 		event.set('time', d);"
 	}
 ```
