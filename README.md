@@ -75,9 +75,7 @@ Sau đó xóa hết container, images liên quan ELK
 
     Thay thế password của `elastic` trong Logstash pipeline file (`logstash/pipeline/logstash.conf`).
 
-    *:information_source: Do not use the `logstash_system` user inside the Logstash **pipeline** file, it does not have
-    sufficient permissions to create indices. Follow the instructions at [Configuring Security in Logstash][ls-security]
-    to create a user with suitable roles.*
+    *:information_source: Không dùng `logstash_system` user trong Logstash **pipeline** file, nó không đủ quyền để tạo chỉ mục. Tài liệu tham khảo [Configuring Security in Logstash][ls-security].*
 
     See also the [Configuration](#configuration) section below.
 
@@ -128,7 +126,7 @@ Tham khảo [Connect Kibana with Elasticsearch][connect-kibana] và [Creating an
 
 #### Command line
 
-Tạo index pattern via the Kibana API:
+Tạo index pattern thông qua Kibana API:
 
 ```console
 $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
@@ -138,8 +136,7 @@ $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
     -d '{"attributes":{"title":"logstash-*","timeFieldName":"@timestamp"}}'
 ```
 
-The created pattern will automatically be marked as the default index pattern as soon as the Kibana UI is opened for the
-first time.
+Pattern đã tạo sẽ tự động được đánh dấu là mẫu chỉ mục mặc định ngay sau khi giao diện người dùng Kibana được mở lần đầu tiên.
 
 ## Configuration
 
@@ -177,12 +174,11 @@ elasticsearch:
     cluster.name: my-cluster
 ```
 
-Please refer to the following documentation page for more details about how to configure Elasticsearch inside Docker
-containers: [Install Elasticsearch with Docker][es-docker].
+Tài liệu tham khảo: [Install Elasticsearch with Docker][es-docker].
 
 ### Kibana
 
-The Kibana default configuration is stored in [`kibana/config/kibana.yml`][config-kbn].
+Kibana config được lưu tại [`kibana/config/kibana.yml`][config-kbn].
 
 Tài liệu tham khảo:
 
@@ -190,7 +186,7 @@ Tài liệu tham khảo:
 
 ### Logstash
 
-The Logstash configuration is stored in [`logstash/config/logstash.yml`][config-ls].
+Logstash config được lưu tại [`logstash/config/logstash.yml`][config-ls].
 
 Tài liệu tham khảo:
 
