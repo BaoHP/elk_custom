@@ -69,9 +69,9 @@ Sau đó xóa hết container, images liên quan ELK
 
 1. Thay đổi usernames và passwords trong config files
 
-    Use the `kibana_system` user (`kibana` for releases <7.8.0) inside the Kibana configuration file
-    (`kibana/config/kibana.yml`) and the `logstash_system` user inside the Logstash configuration file
-    (`logstash/config/logstash.yml`) in place of the existing `elastic` user.
+    Dùng `kibana_system` user (`kibana` cho bản <7.8.0) trong Kibana config
+    (`kibana/config/kibana.yml`) và `logstash_system` trong Logstash config
+    (`logstash/config/logstash.yml`) thay cho `elastic` user.
 
     Thay thế password của `elastic` trong Logstash pipeline file (`logstash/pipeline/logstash.conf`).
 
